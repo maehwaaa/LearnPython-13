@@ -7,61 +7,76 @@ class Turtle:
 
     def go_up(self):  # увеличивает y на s
         self.y += self.s
+        print(f"Черепашка пошла вверх. Теперь ({self.x}, {self.y})")
 
     def go_down(self):  # уменьшает y на s
         self.y -= self.s
+        print(f"Черепашка пошла вниз. Теперь ({self.x}, {self.y})")
 
     def go_left(self):  # уменьшает x на s
         self.x -= self.s
+        print(f"Черепашка пошла влево. Теперь ({self.x}, {self.y})")
 
     def go_right(self):  # увеличивает x на s
         self.x += self.s
+        print(f"Черепашка пошла вправо. Теперь ({self.x}, {self.y})")
 
     def evolve(self):  # увеличивает s на 1
         self.s += 1
+        print(f"Шаг увеличен. Теперь шаг = {self.s}")
 
     def degrade(self):  # уменьшает s на 1 или ошибка
         if self.s > 1:
             self.s -= 1
+            print(f"Шаг уменьшен. Теперь шаг = {self.s}")
         else:
-            raise ValueError("Шаг не может быть ≤ 0!")
+            print("Ошибка: шаг не может быть ≤ 0!")
 
-    def count_moves(self, x2, y2):  
+    def count_moves(self, x2, y2):
         dx = abs(x2 - self.x)
         dy = abs(y2 - self.y)
 
-        moves_x = (dx + self.s - 1) // self.s  # делим с округлением вверх
+        moves_x = (dx + self.s - 1) // self.s
         moves_y = (dy + self.s - 1) // self.s
         return moves_x + moves_y
 
     def __str__(self):
         return f"Позиция черепашки: ({self.x}, {self.y}), шаг = {self.s}"
-    
-    def move_to(self, x2, y2): # тут пошаговое движение к конечной точке
-        print(f"Старт: ({self.x}, {self.y}), шаг = {self.s}")
 
-        while self.x != x2 or self.y != y2:
-            if self.x < x2:
-                self.go_right()
-            elif self.x > x2:
-                self.go_left()
+# основное
+def main():
+    t = Turtle(0, 0, 1) # изначальная позиция и шаг
+    print("🐢 Игра 'Черепашка'! 🐢")
+    print("Команды: up, down, left, right, evolve, degrade, count, status, exit")
 
-            if self.y < y2:
-                self.go_up()
-            elif self.y > y2:
-                self.go_down()
+    while True:
+        command = input("\nВведите команду: ").strip().lower()
 
-            print(f"Черепашка сейчас в точке ({self.x}, {self.y})")
+        if command == "up":
+            t.go_up()
+        elif command == "down":
+            t.go_down()
+        elif command == "left":
+            t.go_left()
+        elif command == "right":
+            t.go_right()
+        elif command == "evolve":
+            t.evolve()
+        elif command == "degrade":
+            t.degrade()
+        elif command == "count":
+            x2 = int(input("Введите конечную X: "))
+            y2 = int(input("Введите конечную Y: "))
+            moves = t.count_moves(x2, y2)
+            print(f"До ({x2}, {y2}) минимум шагов: {moves}")
+        elif command == "status":
+            print(t)
+        elif command == "exit":
+            print("Выход из игры. Пока! 🐢")
+            break
+        else:
+            print("Неизвестная команда!")
 
-        print("Цель достигнута!")
 
-    def __str__(self):
-        return f"Позиция черепашки: ({self.x}, {self.y}), шаг = {self.s}"
-
-t = Turtle(0, 0, 1)  # начальная позиция (0,0), шаг = 1
-print("Начальная позиция:", t)
-
-x2 = int(input("Введите конечную координату X: "))
-y2 = int(input("Введите конечную координату Y: "))
-
-t.move_to(x2, y2)
+if __name__ == "__main__":
+    main()
